@@ -1,0 +1,22 @@
+.blank-screen {
+    display: grid;
+    align-content: end;
+    justify-items: center;
+    gap: calc(14 * var(--screen-pixel));
+    padding-block-end: calc(70 * var(--screen-pixel));
+    background-color: #000000;
+}
+
+.blank-screen-hint {
+    color: #8a8a8a;
+    font-size: calc(24 * var(--screen-pixel));
+}
+
+.blank-screen-hint[data-tone='dim'] {
+    color: #767676;
+}
+
+.blank-screen-detail {
+    color: #8a8a8a;
+    font-size: calc(18 * var(--screen-pixel));
+}
