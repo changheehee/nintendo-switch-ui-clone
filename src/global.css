@@ -1,0 +1,36 @@
+:root {
+    color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    min-block-size: 100dvh;
+    margin: 0;
+    overflow: hidden;
+    background-color: #000000;
+}
+
+button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.screen-reader-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}

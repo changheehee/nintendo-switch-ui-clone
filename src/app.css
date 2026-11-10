@@ -1,0 +1,169 @@
+.console-screen {
+    --screen-width: 1280;
+    --screen-height: 720;
+    --screen-pixel: min(calc(100vw / var(--screen-width)), calc(100dvh / var(--screen-height)));
+    --layer-cursor: 1;
+    --layer-page: 5;
+    --layer-viewer: 6;
+    --layer-dialog: 10;
+    --layer-curtain: 20;
+    --layer-toast: 30;
+    --font-system: 'Hind', sans-serif;
+    --font-clock: 'Barlow', sans-serif;
+    --shadow-item: 0 calc(1 * var(--screen-pixel)) calc(3 * var(--screen-pixel)) var(--color-soft-shadow);
+
+    position: relative;
+    inline-size: calc(var(--screen-width) * var(--screen-pixel));
+    block-size: calc(var(--screen-height) * var(--screen-pixel));
+    overflow: hidden;
+    background-color: #000000;
+    color: var(--color-text);
+    font-family: var(--font-system);
+    user-select: none;
+}
+
+.console-screen[data-theme='basicWhite'] {
+    color-scheme: light;
+
+    --color-background: #ebebeb;
+    --color-text: #2d2d2d;
+    --color-muted-text: #666666;
+    --color-surface: #ffffff;
+    --color-accent: #3250f0;
+    --color-separator: #cdcdcd;
+    --color-side-menu: #f0f0f0;
+    --color-row-focus: #ffffff;
+    --color-modal: #f0f0f0;
+    --color-modal-side-menu: #f4f4f4;
+    --color-swatch-white-border: #bdbdbd;
+    --color-swatch-black-border: #404040;
+    --color-cursor-gap: #ffffff;
+    --color-cursor-deep: #0bc4d6;
+    --color-cursor-light: #50edde;
+    --color-cursor-glow: rgb(173 255 253 / 0.9);
+    --color-highlight-text: #13b6c4;
+    --color-placeholder: #efefef;
+    --color-placeholder-rim: #f7f7f7;
+    --color-soft-shadow: rgb(0 0 0 / 0.12);
+    --color-glyph-news: #dd4650;
+    --color-glyph-eshop: #eda21d;
+    --color-glyph-album: #1c70e5;
+    --color-glyph-system: #696e6e;
+    --color-notification: #364be4;
+    --color-wifi-unlit: #bebebe;
+    --color-battery-charging: #5ef718;
+    --color-dialog-dim: rgb(20 30 40 / 0.74);
+    --color-dialog: #efefef;
+    --color-dialog-line: #d2d2d2;
+    --color-dialog-choice: #3250be;
+    --color-dialog-focus: #ffffff;
+    --color-dialog-press-flash: #d2edf0;
+    --color-handheld-icon: #474747;
+    --color-news-panel: #232323;
+    --color-news-empty: #4e4e4e;
+    --color-lock-band: #fafafa;
+    --color-unlock-disc: #d6d6d6;
+}
+
+.console-screen[data-theme='basicBlack'] {
+    color-scheme: dark;
+
+    --color-background: #2d2d2d;
+    --color-text: #ffffff;
+    --color-muted-text: #a8a8a8;
+    --color-surface: #505050;
+    --color-accent: #00ffc9;
+    --color-separator: #4e4e4e;
+    --color-side-menu: #333333;
+    --color-row-focus: #1f2329;
+    --color-modal: #333333;
+    --color-modal-side-menu: #383838;
+    --color-swatch-white-border: #cdcdcd;
+    --color-swatch-black-border: #505050;
+    --color-cursor-gap: #12232f;
+    --color-cursor-deep: #1f93c4;
+    --color-cursor-light: #46c8f5;
+    --color-cursor-glow: rgb(70 200 245 / 0.6);
+    --color-highlight-text: #40ade3;
+    --color-placeholder: #383838;
+    --color-placeholder-rim: #404040;
+    --color-soft-shadow: rgb(0 0 0 / 0.3);
+    --color-glyph-news: #e5644c;
+    --color-glyph-eshop: #f0b021;
+    --color-glyph-album: #2d9dea;
+    --color-glyph-system: #e0e0e0;
+    --color-notification: #00ffc9;
+    --color-wifi-unlit: #606060;
+    --color-battery-charging: #5ef718;
+    --color-dialog-dim: rgb(10 12 14 / 0.72);
+    --color-dialog: #464646;
+    --color-dialog-line: #5a5a5a;
+    --color-dialog-choice: #00ffc9;
+    --color-dialog-focus: #1f2329;
+    --color-dialog-press-flash: #24525a;
+    --color-handheld-icon: #e3e3e3;
+    --color-news-panel: #1b1b1b;
+    --color-news-empty: #3c3c3c;
+    --color-lock-band: #383838;
+    --color-unlock-disc: #5e5e5e;
+}
+
+.console-layer {
+    position: absolute;
+    inset: 0;
+}
+
+button:focus-visible {
+    outline: calc(3 * var(--screen-pixel)) solid var(--color-cursor-deep);
+    outline-offset: calc(2 * var(--screen-pixel));
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes run-timeline {
+    from {
+        visibility: visible;
+    }
+
+    to {
+        visibility: visible;
+    }
+}
+
+@keyframes show-while-running {
+    from {
+        visibility: visible;
+    }
+
+    to {
+        visibility: visible;
+    }
+}
+
+@keyframes press-item {
+    30% {
+        scale: 0.95;
+    }
+
+    70% {
+        scale: 1.01;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes press-item {
+        to {
+            scale: 1;
+        }
+    }
+}
