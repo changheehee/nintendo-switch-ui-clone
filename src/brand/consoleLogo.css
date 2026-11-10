@@ -1,0 +1,69 @@
+.console-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: #ffffff;
+    font-family: var(--font-clock);
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.console-logo-wordmark {
+    display: grid;
+    justify-items: end;
+    gap: 0.16em;
+}
+
+.console-logo-maker {
+    margin-inline-end: -0.32em;
+    font-size: 0.5em;
+    letter-spacing: 0.32em;
+    text-box: trim-both cap alphabetic;
+}
+
+.console-logo-console {
+    margin-inline-end: -0.06em;
+    letter-spacing: 0.06em;
+    text-box: trim-both cap alphabetic;
+}
+
+.console-logo-letter {
+    display: inline-block;
+    text-box: trim-both cap alphabetic;
+}
+
+.console-logo-emblem {
+    position: relative;
+    inline-size: 1.9em;
+    block-size: 1.9em;
+}
+
+.console-logo-emblem-half {
+    position: absolute;
+    inset: 0;
+    background-color: currentcolor;
+    mask-size: 100% 100%;
+}
+
+.console-logo-emblem-half[data-half='left'] {
+    mask-image: url('./assets/consoleEmblemLeft@2x.png');
+}
+
+.console-logo-emblem-half[data-half='right'] {
+    mask-image: url('./assets/consoleEmblemRight@2x.png');
+}
+
+.console-logo[data-layout='stack'] {
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.console-logo[data-layout='stack'] .console-logo-wordmark {
+    justify-items: center;
+}
+
+.console-logo[data-layout='stack'] .console-logo-emblem {
+    inline-size: 3.2em;
+    block-size: 3.2em;
+}
