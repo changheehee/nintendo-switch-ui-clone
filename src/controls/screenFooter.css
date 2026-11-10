@@ -1,0 +1,32 @@
+.screen-footer {
+    position: absolute;
+    inset-inline: calc(30 * var(--screen-pixel));
+    inset-block: calc(647 * var(--screen-pixel)) 0;
+    border-block-start: calc(1 * var(--screen-pixel)) solid var(--color-text);
+}
+
+.screen-footer[data-layout='modal'] {
+    inset-inline: calc(24 * var(--screen-pixel));
+}
+
+.screen-footer-play-mode {
+    position: absolute;
+    inset-inline-start: calc(25 * var(--screen-pixel));
+    inset-block-start: calc(21 * var(--screen-pixel));
+    inline-size: calc(69 * var(--screen-pixel));
+    block-size: calc(30 * var(--screen-pixel));
+    background-color: var(--color-handheld-icon);
+    mask-image: url('./assets/handheldMode@2x.png');
+    mask-size: 100% 100%;
+}
+
+.screen-footer[data-layout='modal'] .screen-footer-play-mode {
+    inset-inline-start: calc(22 * var(--screen-pixel));
+}
+
+.screen-footer-hints {
+    position: absolute;
+    inset-inline-end: calc(32 * var(--screen-pixel));
+    inset-block-start: calc(35.5 * var(--screen-pixel));
+    translate: 0 -50%;
+}

@@ -1,0 +1,66 @@
+.selection-cursor {
+    --cursor-band: calc(5 * var(--screen-pixel));
+    --cursor-gap: calc(4 * var(--screen-pixel));
+    --cursor-glow: calc(4 * var(--screen-pixel));
+    --cursor-inset: calc(-1 * (var(--cursor-band) + var(--cursor-gap)));
+
+    position: absolute;
+    inset: var(--cursor-inset);
+    z-index: var(--layer-cursor);
+    border: var(--cursor-band) solid var(--color-cursor-deep);
+    border-radius: calc(3 * var(--screen-pixel));
+    box-shadow:
+        inset 0 0 0 var(--cursor-gap) var(--color-cursor-gap),
+        0 0 var(--cursor-glow) var(--color-cursor-glow);
+    pointer-events: none;
+    animation: pulse-cursor 500ms ease-in-out infinite alternate;
+}
+
+.selection-cursor[data-shape='shortcut'] {
+    --cursor-gap: calc(5 * var(--screen-pixel));
+
+    border-radius: 50%;
+}
+
+.selection-cursor[data-shape='avatar'] {
+    --cursor-gap: calc(2 * var(--screen-pixel));
+
+    border-radius: 50%;
+}
+
+.selection-cursor[data-shape='row'] {
+    --cursor-gap: 0px;
+    --cursor-band: calc(4 * var(--screen-pixel));
+}
+
+.selection-cursor[data-shape='choice'] {
+    --cursor-gap: 0px;
+    --cursor-band: calc(4 * var(--screen-pixel));
+    --cursor-inset: 0px;
+
+    border-radius: 0;
+}
+
+.selection-cursor[data-pressed='true'] {
+    animation:
+        pulse-cursor 500ms ease-in-out infinite alternate paused,
+        press-item 180ms ease-out both;
+}
+
+.selection-cursor[data-shape='choice'][data-pressed='true'] {
+    animation: fade-out 33ms linear forwards;
+}
+
+@keyframes pulse-cursor {
+    to {
+        border-color: var(--color-cursor-light);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes pulse-cursor {
+        to {
+            border-color: var(--color-cursor-deep);
+        }
+    }
+}
