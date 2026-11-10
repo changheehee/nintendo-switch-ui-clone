@@ -1,6 +1,7 @@
 import { useReducer, useState } from 'react';
 import type { ActionDispatch } from 'react';
 import './app.css';
+import { BootScreen } from './boot/BootScreen.tsx';
 import { INITIAL_CONSOLE_STATE, updateConsole } from './console/consoleState.ts';
 import type { ConsoleAction, ConsoleState } from './console/consoleState.ts';
 import { ConsoleInputContext, createConsoleInput } from './input/consoleInput.ts';
@@ -47,6 +48,10 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     dispatch({ type: 'powerPressed' });
   }
 
+  function finishBoot() {
+    dispatch({ type: 'bootFinished' });
+  }
+
   function wakeUp() {
     dispatch({ type: 'wokeUp' });
   }
@@ -55,7 +60,7 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     case 'off':
       return <PowerOffScreen onPowerPressed={powerOn} />;
     case 'booting':
-      return null;
+      return <BootScreen onFinished={finishBoot} />;
     case 'locked':
       return null;
     case 'home':
