@@ -1,9 +1,11 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useRef, useState } from 'react';
 import type { ActionDispatch } from 'react';
 import './app.css';
 import { BootScreen } from './boot/BootScreen.tsx';
-import { INITIAL_CONSOLE_STATE, updateConsole } from './console/consoleState.ts';
+import { findRunningGameId, INITIAL_CONSOLE_STATE, updateConsole } from './console/consoleState.ts';
 import type { ConsoleAction, ConsoleState } from './console/consoleState.ts';
+import { GameLaunchScreen } from './games/GameLaunchScreen.tsx';
+import { RunningGame } from './games/RunningGame.tsx';
 import { ConsoleInputContext, createConsoleInput } from './input/consoleInput.ts';
 import type { ConsoleButton } from './input/consoleButtons.ts';
 import { useKeyboardButtons } from './input/useKeyboardButtons.ts';
@@ -20,6 +22,8 @@ type ScreenProps = {
 export function App() {
   const [state, dispatch] = useReducer(updateConsole, INITIAL_CONSOLE_STATE);
   const [input] = useState(createConsoleInput);
+  const nextCaptureIdRef = useRef(1);
+  const runningGameId = findRunningGameId(state);
 
   useKeyboardButtons(pressConsoleButton);
 
@@ -32,9 +36,16 @@ export function App() {
     input.deliver(button, isRepeat);
   }
 
+  function saveCapture(imageUrl: string) {
+    const captureId = nextCaptureIdRef.current;
+    nextCaptureIdRef.current += 1;
+    dispatch({ type: 'screenCaptured', captureId, imageUrl, capturedAt: new Date() });
+  }
+
   return (
     <ConsoleInputContext value={input}>
       <div className="console-screen" data-theme={state.settings.theme}>
+        {runningGameId !== null && <RunningGame key={runningGameId} gameId={runningGameId} isSuspended={state.screen.kind !== 'playing'} onCapture={saveCapture} />}
         <CurrentScreen state={state} dispatch={dispatch} />
       </div>
     </ConsoleInputContext>
@@ -52,6 +63,10 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     dispatch({ type: 'bootFinished' });
   }
 
+  function startPlaying() {
+    dispatch({ type: 'gameReady' });
+  }
+
   function wakeUp() {
     dispatch({ type: 'wokeUp' });
   }
@@ -66,7 +81,7 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     case 'home':
       return null;
     case 'launching':
-      return null;
+      return <GameLaunchScreen gameId={screen.gameId} onReady={startPlaying} />;
     case 'playing':
       return null;
     case 'applet':
