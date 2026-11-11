@@ -1,0 +1,112 @@
+.system-page {
+    z-index: var(--layer-page);
+    color: var(--color-text);
+}
+
+.system-page-panel {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-background);
+}
+
+.system-page-header {
+    position: absolute;
+    inset-inline: calc(30 * var(--screen-pixel));
+    inset-block-start: 0;
+    display: flex;
+    align-items: center;
+    block-size: calc(87 * var(--screen-pixel));
+    padding-block-start: calc(17 * var(--screen-pixel));
+    border-block-end: calc(1 * var(--screen-pixel)) solid var(--color-text);
+}
+
+.system-page-glyph {
+    inline-size: calc(57 * var(--screen-pixel));
+    block-size: calc(57 * var(--screen-pixel));
+    margin-inline: calc(30 * var(--screen-pixel)) calc(12 * var(--screen-pixel));
+    background-color: var(--color-text);
+    mask-size: 100% 100%;
+}
+
+.system-page-title {
+    margin: 0;
+    font-size: calc(32 * var(--screen-pixel));
+    font-weight: 400;
+    line-height: 1;
+    text-box: trim-both cap alphabetic;
+}
+
+.system-page-picture {
+    inline-size: calc(100 * var(--screen-pixel));
+    block-size: calc(100 * var(--screen-pixel));
+    margin-inline-end: calc(20 * var(--screen-pixel));
+}
+
+.system-page-heading {
+    display: grid;
+    align-self: start;
+    gap: calc(22 * var(--screen-pixel));
+    padding-block-start: calc(56 * var(--screen-pixel));
+}
+
+.system-page-details {
+    display: flex;
+    margin: 0;
+    color: var(--color-muted-text);
+    font-size: calc(19 * var(--screen-pixel));
+    line-height: 1;
+    text-box: trim-both cap alphabetic;
+}
+
+.system-page-detail + .system-page-detail {
+    margin-inline-start: calc(19 * var(--screen-pixel));
+    padding-inline-start: calc(19 * var(--screen-pixel));
+    border-inline-start: calc(1 * var(--screen-pixel)) solid var(--color-separator);
+}
+
+.system-page-body {
+    position: absolute;
+    inset-inline: 0;
+    inset-block: calc(88 * var(--screen-pixel)) calc(73 * var(--screen-pixel));
+    overflow: hidden;
+}
+
+.system-page[data-layout='fullScreen'] .system-page-header {
+    animation: fade-in 60ms linear both;
+}
+
+.system-page[data-layout='fullScreen'] .system-page-body {
+    animation: fade-in 33ms linear both;
+}
+
+.system-page[data-layout='fullScreen'][data-leaving='true'] {
+    animation: run-timeline 160ms linear both;
+}
+
+.system-page[data-layout='fullScreen'][data-leaving='true'] :is(.system-page-header, .system-page-body) {
+    animation: fade-out 90ms linear forwards;
+}
+
+.system-page[data-layout='modal'] {
+    background-color: var(--color-dialog-dim);
+    animation: fade-in 150ms ease-out both;
+}
+
+.system-page[data-layout='modal'][data-leaving='true'] {
+    animation: fade-out 120ms ease-in forwards;
+}
+
+.system-page[data-layout='modal'] .system-page-panel {
+    inset-inline: calc(120 * var(--screen-pixel));
+    background-color: var(--color-modal);
+}
+
+.system-page[data-layout='modal'] .system-page-header {
+    block-size: calc(140 * var(--screen-pixel));
+    padding-block-start: 0;
+    padding-inline-start: calc(40 * var(--screen-pixel));
+}
+
+.system-page[data-layout='modal'] .system-page-body {
+    inset-block-start: calc(141 * var(--screen-pixel));
+}
