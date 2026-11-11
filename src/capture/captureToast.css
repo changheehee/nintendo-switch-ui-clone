@@ -1,0 +1,25 @@
+.capture-toast {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    z-index: var(--layer-toast);
+    display: flex;
+    align-items: center;
+    gap: calc(34 * var(--screen-pixel));
+    inline-size: calc(422 * var(--screen-pixel));
+    block-size: calc(88 * var(--screen-pixel));
+    margin: 0;
+    padding-inline-start: calc(18 * var(--screen-pixel));
+    background-color: rgb(14 14 14 / 0.95);
+    color: #fafafa;
+    font-size: calc(24 * var(--screen-pixel));
+    line-height: 1;
+    pointer-events: none;
+    animation: fade-out 100ms linear 1830ms forwards;
+}
+
+.capture-toast-thumbnail {
+    inline-size: calc(86 * var(--screen-pixel));
+    block-size: calc(52 * var(--screen-pixel));
+    object-fit: cover;
+}

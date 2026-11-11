@@ -2,6 +2,7 @@ import { useReducer, useRef, useState } from 'react';
 import type { ActionDispatch } from 'react';
 import './app.css';
 import { BootScreen } from './boot/BootScreen.tsx';
+import { CaptureToast } from './capture/CaptureToast.tsx';
 import { findRunningGameId, INITIAL_CONSOLE_STATE, updateConsole } from './console/consoleState.ts';
 import type { ConsoleAction, ConsoleState } from './console/consoleState.ts';
 import { GameLaunchScreen } from './games/GameLaunchScreen.tsx';
@@ -19,10 +20,16 @@ type ScreenProps = {
   readonly dispatch: ConsoleDispatch;
 };
 
+type ShownCapture = {
+  readonly id: number;
+  readonly imageUrl: string;
+};
+
 export function App() {
   const [state, dispatch] = useReducer(updateConsole, INITIAL_CONSOLE_STATE);
   const [input] = useState(createConsoleInput);
   const nextCaptureIdRef = useRef(1);
+  const [shownCapture, setShownCapture] = useState<ShownCapture | null>(null);
   const runningGameId = findRunningGameId(state);
 
   useKeyboardButtons(pressConsoleButton);
@@ -40,6 +47,11 @@ export function App() {
     const captureId = nextCaptureIdRef.current;
     nextCaptureIdRef.current += 1;
     dispatch({ type: 'screenCaptured', captureId, imageUrl, capturedAt: new Date() });
+    setShownCapture({ id: captureId, imageUrl });
+  }
+
+  function hideCaptureToast() {
+    setShownCapture(null);
   }
 
   return (
@@ -47,6 +59,7 @@ export function App() {
       <div className="console-screen" data-theme={state.settings.theme}>
         {runningGameId !== null && <RunningGame key={runningGameId} gameId={runningGameId} isSuspended={state.screen.kind !== 'playing'} onCapture={saveCapture} />}
         <CurrentScreen state={state} dispatch={dispatch} />
+        {shownCapture !== null && <CaptureToast key={shownCapture.id} imageUrl={shownCapture.imageUrl} onFinished={hideCaptureToast} />}
       </div>
     </ConsoleInputContext>
   );
