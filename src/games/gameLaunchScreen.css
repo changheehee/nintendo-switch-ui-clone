@@ -1,0 +1,79 @@
+.game-launch {
+    --black-before-logos: 1270ms;
+    --logo-hold: 2400ms;
+    --logo-fade: 150ms;
+    --black-after-logos: 600ms;
+    --logo-click-delay: calc(var(--black-before-logos) + 300ms);
+
+    background-color: #000000;
+    animation: run-timeline calc(var(--black-before-logos) + var(--logo-hold) + var(--logo-fade) + var(--black-after-logos)) linear both;
+}
+
+.game-launch-logos {
+    visibility: hidden;
+    animation:
+        show-while-running 1ms linear var(--black-before-logos) forwards,
+        fade-out var(--logo-fade) linear calc(var(--black-before-logos) + var(--logo-hold)) forwards;
+}
+
+.game-launch-maker {
+    position: absolute;
+    inset-inline-start: calc(47 * var(--screen-pixel));
+    inset-block-start: calc(35 * var(--screen-pixel));
+    inline-size: calc(153 * var(--screen-pixel));
+    block-size: calc(38 * var(--screen-pixel));
+}
+
+.game-launch-console {
+    position: absolute;
+    inset-inline-end: calc(37 * var(--screen-pixel));
+    inset-block-end: calc(27 * var(--screen-pixel));
+    font-size: calc(27.4 * var(--screen-pixel));
+}
+
+
+.game-launch-console .console-logo-emblem-half[data-half='right'] {
+    animation: click-emblem-half 560ms ease-in-out var(--logo-click-delay) both;
+}
+
+.game-launch-console .console-logo-letter {
+    animation: spin-logo-letter 460ms cubic-bezier(0.3, 0.7, 0.3, 1) calc(var(--logo-click-delay) + 250ms + var(--logo-letter-index) * 45ms) both;
+}
+
+@keyframes click-emblem-half {
+    32% {
+        translate: 0 -16%;
+    }
+
+    50% {
+        translate: 0 0;
+    }
+
+    62% {
+        translate: 0 -3%;
+    }
+
+    74% {
+        translate: 0 0;
+    }
+}
+
+@keyframes spin-logo-letter {
+    to {
+        rotate: x 360deg;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes click-emblem-half {
+        to {
+            translate: 0 0;
+        }
+    }
+
+    @keyframes spin-logo-letter {
+        to {
+            rotate: none;
+        }
+    }
+}
