@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { AnimationEvent } from 'react';
+import type { AnimationEvent, ReactElement } from 'react';
 import type { AppletId, ConsoleSettings, HomeEntrance } from '../console/consoleState.ts';
 import type { ButtonHint } from '../controls/ButtonHints.tsx';
 import { ScreenFooter } from '../controls/ScreenFooter.tsx';
@@ -12,10 +12,13 @@ import { CONSOLE_SHORTCUTS, findAppletShortcutIndex, readShortcut } from '../sho
 import { StatusBar } from '../statusBar/StatusBar.tsx';
 import { CONSOLE_USER } from '../user/userProfile.ts';
 import type { UserProfile } from '../user/userProfile.ts';
+import { CloseSoftwareDialog } from './games/CloseSoftwareDialog.tsx';
 import { GameRow } from './games/GameRow.tsx';
+import { SoftwareOptions } from './games/SoftwareOptions.tsx';
 import { createHomeFocus, focusHomeItem, isHomeItemFocused, moveHomeFocus, readFocusedIndex } from './homeFocus.ts';
 import type { HomeFocus, HomeRow, HomeRowSizes } from './homeFocus.ts';
 import { ShortcutRow } from './shortcuts/ShortcutRow.tsx';
+import { UserPage } from './users/UserPage.tsx';
 import { UserRow } from './users/UserRow.tsx';
 import './homeMenu.css';
 
@@ -26,9 +29,15 @@ type HomeMenuProps = {
   readonly hasUnreadNews: boolean;
   readonly onStartGame: (gameId: GameId) => void;
   readonly onContinueGame: () => void;
+  readonly onCloseGame: () => void;
   readonly onOpenApplet: (applet: AppletId) => void;
   readonly onSleep: () => void;
 };
+
+type HomePanel =
+  | { readonly kind: 'closeSoftware'; readonly gameId: GameId }
+  | { readonly kind: 'softwareOptions'; readonly gameId: GameId }
+  | { readonly kind: 'userPage'; readonly user: UserProfile };
 
 type ContinueTrigger = 'gameTile' | 'homeButton';
 
@@ -39,6 +48,12 @@ type HomeExit =
   | { readonly kind: 'sleeping' };
 
 type CurtainExit = Exclude<HomeExit, { readonly kind: 'continuingGame' }>;
+
+type HomePanelLayerProps = {
+  readonly panel: HomePanel;
+  readonly onClosePanel: () => void;
+  readonly onCloseGame: () => void;
+};
 
 type HomeCurtainProps = {
   readonly exit: CurtainExit;
@@ -68,12 +83,14 @@ export function HomeMenu({
   hasUnreadNews,
   onStartGame,
   onContinueGame,
+  onCloseGame,
   onOpenApplet,
   onSleep,
 }: HomeMenuProps) {
   const [focus, setFocus] = useState(function focusWhereHomeWasEntered() {
     return createEntranceFocus(entrance, suspendedGameId);
   });
+  const [panel, setPanel] = useState<HomePanel | null>(null);
   const [exit, setExit] = useState<HomeExit | null>(null);
   const isLeaving = exit !== null;
   const isGameFocused = focus.row === 'games';
@@ -99,7 +116,15 @@ export function HomeMenu({
         return;
       case 'plus':
       case 'minus':
+        if (isGameFocused) {
+          openSoftwareOptions();
+        }
+        return;
       case 'x':
+        if (isGameFocused && isFocusedGameSuspended()) {
+          openCloseSoftwareDialog();
+        }
+        return;
       case 'b':
       case 'y':
       case 'capture':
@@ -135,6 +160,7 @@ export function HomeMenu({
   function activateFocusedItem() {
     switch (focus.row) {
       case 'users':
+        setPanel({ kind: 'userPage', user: readHomeUser(readFocusedIndex(focus)) });
         return;
       case 'games':
         startFocusedGame();
@@ -181,6 +207,23 @@ export function HomeMenu({
     return readFocusedGame().id === suspendedGameId;
   }
 
+  function openSoftwareOptions() {
+    setPanel({ kind: 'softwareOptions', gameId: readFocusedGame().id });
+  }
+
+  function openCloseSoftwareDialog() {
+    setPanel({ kind: 'closeSoftware', gameId: readFocusedGame().id });
+  }
+
+  function closePanel() {
+    setPanel(null);
+  }
+
+  function closeSuspendedGame() {
+    setPanel(null);
+    onCloseGame();
+  }
+
   function finishLeaving() {
     if (exit === null) {
       throw new Error('HOME 메뉴를 떠나는 중이 아닌데 전환 효과가 끝났습니다.');
@@ -215,16 +258,22 @@ export function HomeMenu({
       return [{ buttons: ['a'], label: 'OK', onPress: activateFocusedItem }];
     }
 
+    const optionsHint: ButtonHint = { buttons: ['minus', 'plus'], label: 'Options', onPress: openSoftwareOptions };
+
     if (isFocusedGameSuspended()) {
-      return [{ buttons: ['a'], label: 'Continue', onPress: activateFocusedItem }];
+      return [
+        optionsHint,
+        { buttons: ['x'], label: 'Close Software', onPress: openCloseSoftwareDialog },
+        { buttons: ['a'], label: 'Continue', onPress: activateFocusedItem },
+      ];
     }
 
-    return [{ buttons: ['a'], label: 'Start', onPress: activateFocusedItem }];
+    return [optionsHint, { buttons: ['a'], label: 'Start', onPress: activateFocusedItem }];
   }
 
   return (
     <div className="home-menu console-layer" data-entrance={entrance.kind} data-exit={exit === null ? 'none' : exit.kind} onAnimationEnd={finishMenuAnimation}>
-      <div className="home-menu-screen" inert={isLeaving}>
+      <div className="home-menu-screen" inert={isLeaving || panel !== null}>
         <div className="home-menu-content">
           <UserRow
             users={HOME_USERS}
@@ -251,9 +300,21 @@ export function HomeMenu({
         </div>
         <ScreenFooter hints={createFooterHints()} layout="fullScreen" />
       </div>
+      {panel !== null && <HomePanelLayer panel={panel} onClosePanel={closePanel} onCloseGame={closeSuspendedGame} />}
       {exit !== null && exit.kind !== 'continuingGame' && <HomeCurtain exit={exit} onFinished={finishLeaving} />}
     </div>
   );
+}
+
+function HomePanelLayer({ panel, onClosePanel, onCloseGame }: HomePanelLayerProps): ReactElement {
+  switch (panel.kind) {
+    case 'closeSoftware':
+      return <CloseSoftwareDialog gameId={panel.gameId} onCancel={onClosePanel} onClose={onCloseGame} />;
+    case 'softwareOptions':
+      return <SoftwareOptions gameId={panel.gameId} onExit={onClosePanel} />;
+    case 'userPage':
+      return <UserPage user={panel.user} onExit={onClosePanel} />;
+  }
 }
 
 function HomeCurtain({ exit, onFinished }: HomeCurtainProps) {
@@ -285,6 +346,16 @@ function readSuspendedGameIndex(suspendedGameId: GameId | null): number {
   }
 
   return findGameIndex(suspendedGameId);
+}
+
+function readHomeUser(index: number): UserProfile {
+  const user = HOME_USERS[index];
+
+  if (user === undefined) {
+    throw new Error(`HOME에 ${index}번째 사용자가 없습니다.`);
+  }
+
+  return user;
 }
 
 function readRowFocus(focus: HomeFocus, row: HomeRow): number | null {

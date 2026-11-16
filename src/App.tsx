@@ -137,6 +137,10 @@ function HomeScreen({ state, entrance, dispatch }: HomeScreenProps) {
     dispatch({ type: 'gameContinued' });
   }
 
+  function closeGame() {
+    dispatch({ type: 'gameClosed' });
+  }
+
   function openApplet(applet: AppletId) {
     dispatch({ type: 'appletOpened', applet });
   }
@@ -153,6 +157,7 @@ function HomeScreen({ state, entrance, dispatch }: HomeScreenProps) {
       hasUnreadNews={state.hasUnreadNews}
       onStartGame={startGame}
       onContinueGame={continueGame}
+      onCloseGame={closeGame}
       onOpenApplet={openApplet}
       onSleep={sleep}
     />
