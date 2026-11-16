@@ -1,10 +1,11 @@
 import { useReducer, useRef, useState } from 'react';
 import type { ActionDispatch } from 'react';
 import './app.css';
+import { AppletScreen } from './applets/AppletScreen.tsx';
 import { BootScreen } from './boot/BootScreen.tsx';
 import { CaptureToast } from './capture/CaptureToast.tsx';
 import { findRunningGameId, INITIAL_CONSOLE_STATE, updateConsole } from './console/consoleState.ts';
-import type { AppletId, ConsoleAction, ConsoleState, HomeEntrance } from './console/consoleState.ts';
+import type { AppletId, ConsoleAction, ConsoleSettings, ConsoleState, HomeEntrance } from './console/consoleState.ts';
 import { GameLaunchScreen } from './games/GameLaunchScreen.tsx';
 import type { GameId } from './games/gameLibrary.ts';
 import { RunningGame } from './games/RunningGame.tsx';
@@ -99,6 +100,14 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     dispatch({ type: 'wokeUp' });
   }
 
+  function closeApplet() {
+    dispatch({ type: 'appletClosed' });
+  }
+
+  function changeSettings(settings: ConsoleSettings) {
+    dispatch({ type: 'settingsChanged', settings });
+  }
+
   switch (screen.kind) {
     case 'off':
       return <PowerOffScreen onPowerPressed={powerOn} />;
@@ -122,7 +131,15 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     case 'playing':
       return null;
     case 'applet':
-      return null;
+      return (
+        <AppletScreen
+          applet={screen.applet}
+          settings={state.settings}
+          captures={state.captures}
+          onSettingsChange={changeSettings}
+          onExit={closeApplet}
+        />
+      );
     case 'asleep':
       return <SleepScreen onWake={wakeUp} />;
   }
