@@ -1,4 +1,5 @@
 import type { AppletId, Capture, ConsoleSettings } from '../console/consoleState.ts';
+import { AlbumApplet } from './album/AlbumApplet.tsx';
 import { ControllersApplet } from './controllers/ControllersApplet.tsx';
 import { SystemSettingsApplet } from './settings/SystemSettingsApplet.tsx';
 
@@ -10,14 +11,14 @@ type AppletScreenProps = {
   readonly onExit: () => void;
 };
 
-export function AppletScreen({ applet, settings, onSettingsChange, onExit }: AppletScreenProps) {
+export function AppletScreen({ applet, settings, captures, onSettingsChange, onExit }: AppletScreenProps) {
   switch (applet) {
     case 'news':
       return null;
     case 'eshop':
       return null;
     case 'album':
-      return null;
+      return <AlbumApplet captures={captures} onExit={onExit} />;
     case 'controllers':
       return <ControllersApplet onExit={onExit} />;
     case 'settings':

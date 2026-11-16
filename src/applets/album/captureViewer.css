@@ -1,0 +1,74 @@
+.capture-viewer {
+    z-index: var(--layer-viewer);
+    margin: 0;
+}
+
+.capture-viewer-stage {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-conic-gradient(#787878 0 25%, #7d7d7d 0 50%);
+    background-size: calc(80 * var(--screen-pixel)) calc(80 * var(--screen-pixel));
+    animation: fade-in 100ms linear both;
+}
+
+.capture-viewer-stage[data-closing='true'] {
+    animation: fade-out 75ms linear forwards;
+}
+
+.capture-viewer-image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    animation: fade-in 33ms linear 600ms both;
+}
+
+.capture-viewer-arrow {
+    position: absolute;
+    inset-block-start: 50%;
+    display: grid;
+    place-items: center;
+    inline-size: calc(64 * var(--screen-pixel));
+    block-size: calc(96 * var(--screen-pixel));
+    translate: 0 -50%;
+}
+
+.capture-viewer-arrow::before {
+    inline-size: calc(26 * var(--screen-pixel));
+    block-size: calc(26 * var(--screen-pixel));
+    border-block-start: calc(5 * var(--screen-pixel)) solid #ffffff;
+    border-inline-end: calc(5 * var(--screen-pixel)) solid #ffffff;
+    filter: drop-shadow(0 0 calc(3 * var(--screen-pixel)) rgb(0 0 0 / 0.5));
+    content: '';
+}
+
+.capture-viewer-arrow[data-direction='previous'] {
+    inset-inline-start: calc(16 * var(--screen-pixel));
+}
+
+.capture-viewer-arrow[data-direction='previous']::before {
+    rotate: -135deg;
+}
+
+.capture-viewer-arrow[data-direction='next'] {
+    inset-inline-end: calc(16 * var(--screen-pixel));
+}
+
+.capture-viewer-arrow[data-direction='next']::before {
+    rotate: 45deg;
+}
+
+.capture-viewer-bar {
+    position: absolute;
+    inset-inline: 0;
+    inset-block: calc(648 * var(--screen-pixel)) 0;
+    background-color: rgb(0 0 0 / 0.83);
+    color: #ffffff;
+}
+
+.capture-viewer-hints {
+    position: absolute;
+    inset-inline-end: calc(62 * var(--screen-pixel));
+    inset-block-start: 50%;
+    translate: 0 -50%;
+}
