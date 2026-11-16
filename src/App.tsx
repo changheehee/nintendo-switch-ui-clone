@@ -10,6 +10,7 @@ import { RunningGame } from './games/RunningGame.tsx';
 import { ConsoleInputContext, createConsoleInput } from './input/consoleInput.ts';
 import type { ConsoleButton } from './input/consoleButtons.ts';
 import { useKeyboardButtons } from './input/useKeyboardButtons.ts';
+import { LockScreen } from './lock/LockScreen.tsx';
 import { PowerOffScreen } from './power/PowerOffScreen.tsx';
 import { SleepScreen } from './power/SleepScreen.tsx';
 
@@ -76,6 +77,14 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     dispatch({ type: 'bootFinished' });
   }
 
+  function unlock() {
+    dispatch({ type: 'unlocked' });
+  }
+
+  function changeNextLockSkip(skipsNextLock: boolean) {
+    dispatch({ type: 'nextLockSkipChanged', skipsNextLock });
+  }
+
   function startPlaying() {
     dispatch({ type: 'gameReady' });
   }
@@ -90,7 +99,16 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     case 'booting':
       return <BootScreen onFinished={finishBoot} />;
     case 'locked':
-      return null;
+      return (
+        <LockScreen
+          skipsUnlockPrompt={screen.skipsUnlockPrompt}
+          skipsNextLock={state.skipsNextLock}
+          settings={state.settings}
+          hasUnreadNews={state.hasUnreadNews}
+          onSkipNextLockChange={changeNextLockSkip}
+          onUnlocked={unlock}
+        />
+      );
     case 'home':
       return null;
     case 'launching':

@@ -1,0 +1,146 @@
+.unlock-prompt {
+    isolation: isolate;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    animation: fade-in 160ms linear both;
+}
+
+.unlock-prompt[data-going-back='true'] {
+    animation: fade-out 160ms linear forwards;
+}
+
+.unlock-prompt[data-unlocked='true'] {
+    animation: run-timeline 380ms linear both;
+}
+
+.unlock-prompt-content {
+    position: absolute;
+    inset: 0;
+}
+
+.unlock-prompt[data-unlocked='true'] .unlock-prompt-content {
+    animation: zoom-away-from-lock 170ms ease-in 210ms forwards;
+}
+
+.unlock-prompt-back,
+.unlock-prompt-skip {
+    position: absolute;
+    inset-block-start: calc(44 * var(--screen-pixel));
+    z-index: 1;
+    color: var(--color-muted-text);
+    font-size: calc(21 * var(--screen-pixel));
+    line-height: 1;
+    translate: 0 -50%;
+    text-box: trim-both cap alphabetic;
+}
+
+.unlock-prompt-back {
+    inset-inline-start: calc(64 * var(--screen-pixel));
+}
+
+.unlock-prompt-skip {
+    inset-inline-end: calc(35 * var(--screen-pixel));
+    display: flex;
+    align-items: center;
+    gap: calc(10 * var(--screen-pixel));
+    cursor: pointer;
+}
+
+.unlock-prompt-skip-box {
+    display: grid;
+    place-items: center;
+    inline-size: calc(19 * var(--screen-pixel));
+    block-size: calc(19 * var(--screen-pixel));
+    margin: 0;
+    border: calc(2 * var(--screen-pixel)) solid currentcolor;
+    border-radius: calc(2 * var(--screen-pixel));
+    appearance: none;
+    cursor: pointer;
+}
+
+.unlock-prompt-skip-box:checked {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
+}
+
+.unlock-prompt-skip-box:checked::after {
+    inline-size: calc(9 * var(--screen-pixel));
+    block-size: calc(5 * var(--screen-pixel));
+    margin-block-start: calc(-2 * var(--screen-pixel));
+    border-inline-start: calc(2 * var(--screen-pixel)) solid var(--color-background);
+    border-block-end: calc(2 * var(--screen-pixel)) solid var(--color-background);
+    rotate: -45deg;
+    content: '';
+}
+
+.unlock-prompt-disc {
+    position: absolute;
+    inset-inline-start: calc(550 * var(--screen-pixel));
+    inset-block-start: calc(244 * var(--screen-pixel));
+    inline-size: calc(180 * var(--screen-pixel));
+    block-size: calc(180 * var(--screen-pixel));
+    border-radius: 50%;
+    background-color: var(--color-unlock-disc);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.unlock-prompt[data-unlocked='true'] .unlock-prompt-disc {
+    animation: show-while-running 1ms linear 80ms forwards;
+}
+
+.unlock-prompt-band {
+    position: absolute;
+    inset-inline: 0;
+    inset-block: calc(548 * var(--screen-pixel)) calc(44 * var(--screen-pixel));
+    background-color: var(--color-lock-band);
+    pointer-events: none;
+}
+
+.unlock-prompt-message {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(52 * var(--screen-pixel));
+    margin: 0;
+    font-size: calc(35.5 * var(--screen-pixel));
+    line-height: 1;
+    text-align: center;
+    text-box: trim-both cap alphabetic;
+}
+
+.unlock-prompt-progress {
+    position: absolute;
+    inset-inline-start: calc(593 * var(--screen-pixel));
+    inset-block-start: calc(98 * var(--screen-pixel));
+    display: flex;
+    gap: calc(26 * var(--screen-pixel));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.unlock-prompt-dot {
+    inline-size: calc(14 * var(--screen-pixel));
+    block-size: calc(14 * var(--screen-pixel));
+    border: calc(2 * var(--screen-pixel)) solid currentcolor;
+    border-radius: 50%;
+}
+
+.unlock-prompt-dot[data-filled='true'] {
+    background-color: currentcolor;
+}
+
+@keyframes zoom-away-from-lock {
+    to {
+        opacity: 0;
+        scale: 1.055;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes zoom-away-from-lock {
+        to {
+            opacity: 0;
+        }
+    }
+}

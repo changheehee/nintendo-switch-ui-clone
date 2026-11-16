@@ -1,0 +1,165 @@
+.featured-news {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(380 * var(--screen-pixel));
+    background-color: var(--color-news-panel);
+    color: #ffffff;
+}
+
+.featured-news-buttons {
+    position: absolute;
+    inset-inline-start: calc(127 * var(--screen-pixel));
+    inset-block-start: calc(54 * var(--screen-pixel));
+    inline-size: calc(127 * var(--screen-pixel));
+    block-size: calc(40 * var(--screen-pixel));
+}
+
+.featured-news-minus,
+.featured-news-plus,
+.featured-news-plus::after,
+
+.featured-news-slash {
+    position: absolute;
+    background-color: #ffffff;
+}
+
+.featured-news-minus {
+    inset-inline-start: 0;
+    inset-block-start: calc(15 * var(--screen-pixel));
+    inline-size: calc(39 * var(--screen-pixel));
+    block-size: calc(10 * var(--screen-pixel));
+}
+
+.featured-news-plus {
+    inset-inline-start: calc(88 * var(--screen-pixel));
+    inset-block-start: calc(15 * var(--screen-pixel));
+    inline-size: calc(39 * var(--screen-pixel));
+    block-size: calc(10 * var(--screen-pixel));
+}
+
+.featured-news-plus::after {
+    inset-inline-start: calc(14.5 * var(--screen-pixel));
+    inset-block-start: calc(-15 * var(--screen-pixel));
+    inline-size: calc(10 * var(--screen-pixel));
+    block-size: calc(40 * var(--screen-pixel));
+    content: '';
+}
+
+.featured-news-slash {
+    inset-inline-start: calc(57.5 * var(--screen-pixel));
+    inset-block-start: calc(2 * var(--screen-pixel));
+    inline-size: calc(3 * var(--screen-pixel));
+    block-size: calc(36 * var(--screen-pixel));
+    background-color: #5a5a5a;
+    rotate: 20deg;
+}
+
+.featured-news-title {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(109 * var(--screen-pixel));
+    margin: 0;
+    font-size: calc(27 * var(--screen-pixel));
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    text-box: trim-both cap alphabetic;
+}
+
+.featured-news-list {
+    position: absolute;
+    inset-inline-start: calc(46 * var(--screen-pixel));
+    inset-block-start: calc(169 * var(--screen-pixel));
+    display: grid;
+    gap: calc(3 * var(--screen-pixel));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.featured-news-tile {
+    position: relative;
+    inline-size: calc(288 * var(--screen-pixel));
+    block-size: calc(163 * var(--screen-pixel));
+    overflow: hidden;
+}
+
+.featured-news-tile[data-artwork='empty'] {
+    background-color: var(--color-news-empty);
+}
+
+.featured-news-picture {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: 50% 0;
+}
+
+.featured-news-tile[data-artwork='picture']::after {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to bottom, rgb(0 0 0 / 0) 45%, rgb(10 12 40 / 0.72));
+    content: '';
+}
+
+.featured-news-headline {
+    position: absolute;
+    z-index: 1;
+    inset-inline: calc(4 * var(--screen-pixel)) calc(8 * var(--screen-pixel));
+    inset-block-end: calc(6 * var(--screen-pixel));
+    margin: 0;
+    font-size: calc(19 * var(--screen-pixel));
+    line-height: calc(21 * var(--screen-pixel));
+    text-shadow:
+        0 0 calc(2 * var(--screen-pixel)) rgb(0 0 0 / 0.9),
+        0 calc(1 * var(--screen-pixel)) calc(3 * var(--screen-pixel)) rgb(0 0 0 / 0.7);
+}
+
+.featured-news-unread {
+    position: absolute;
+    inset-inline-end: calc(7 * var(--screen-pixel));
+    inset-block-start: calc(7 * var(--screen-pixel));
+    inline-size: calc(12 * var(--screen-pixel));
+    block-size: calc(12 * var(--screen-pixel));
+    border: calc(2 * var(--screen-pixel)) solid #ffffff;
+    border-radius: 50%;
+    background-color: var(--color-notification);
+}
+
+.shop-banner {
+    position: absolute;
+    inset: 0;
+    background-color: #f47b20;
+}
+
+.shop-banner-name {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(22 * var(--screen-pixel));
+    font-size: calc(31 * var(--screen-pixel));
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    text-box: trim-both cap alphabetic;
+}
+
+.shop-banner-badge {
+    position: absolute;
+    inset-inline-start: calc(115 * var(--screen-pixel));
+    inset-block-start: calc(68 * var(--screen-pixel));
+    display: grid;
+    place-items: center;
+    inline-size: calc(58 * var(--screen-pixel));
+    block-size: calc(58 * var(--screen-pixel));
+    border-radius: 50%;
+    background-color: rgb(255 255 255 / 0.85);
+}
+
+.shop-banner-glyph {
+    inline-size: calc(34 * var(--screen-pixel));
+    block-size: calc(34 * var(--screen-pixel));
+    background-color: #f47b20;
+    mask-size: 100% 100%;
+}
