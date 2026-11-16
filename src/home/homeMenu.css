@@ -1,0 +1,72 @@
+.home-menu {
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+.home-menu[data-entrance='fromUnlock'][data-exit='none'] .home-menu-screen {
+    animation: fade-in 230ms ease-out both;
+}
+
+.home-menu[data-entrance='fromApplet'][data-exit='none'] .home-menu-content {
+    animation: fade-in 280ms ease-out both;
+}
+
+.home-menu[data-entrance='fromGame'][data-exit='none'] {
+    animation: enter-home-from-game 200ms ease-out both;
+}
+
+.home-menu[data-exit='continuingGame'] {
+    animation: leave-home-to-game 90ms ease-in 200ms forwards;
+}
+
+.home-menu[data-exit='openingApplet'] .home-menu-content {
+    animation: fade-out 120ms linear 60ms forwards;
+}
+
+.home-menu-curtain {
+    position: absolute;
+    inset: 0;
+    z-index: var(--layer-curtain);
+}
+
+.home-menu-curtain[data-exit='startingGame'] {
+    background-color: #000000;
+    animation: fade-in 200ms linear 410ms both;
+}
+
+.home-menu-curtain[data-exit='sleeping'] {
+    background-color: #000000;
+    animation: fade-in 130ms ease-in 100ms both;
+}
+
+.home-menu-curtain[data-exit='openingApplet'] {
+    animation: run-timeline 350ms linear both;
+}
+
+@keyframes enter-home-from-game {
+    from {
+        opacity: 0;
+        scale: 1.03;
+    }
+}
+
+@keyframes leave-home-to-game {
+    to {
+        opacity: 0;
+        scale: 1.04;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes enter-home-from-game {
+        from {
+            opacity: 0;
+        }
+    }
+
+    @keyframes leave-home-to-game {
+        to {
+            opacity: 0;
+        }
+    }
+}

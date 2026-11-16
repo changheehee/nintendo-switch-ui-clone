@@ -1,0 +1,308 @@
+import { useState } from 'react';
+import type { AnimationEvent } from 'react';
+import type { AppletId, ConsoleSettings, HomeEntrance } from '../console/consoleState.ts';
+import type { ButtonHint } from '../controls/ButtonHints.tsx';
+import { ScreenFooter } from '../controls/ScreenFooter.tsx';
+import { findGameIndex, GAME_LIBRARY, readGame } from '../games/gameLibrary.ts';
+import type { Game, GameId } from '../games/gameLibrary.ts';
+import { useConsoleButtons } from '../input/consoleInput.ts';
+import type { ConsoleButton } from '../input/consoleButtons.ts';
+import { isDirectionButton } from '../input/consoleButtons.ts';
+import { CONSOLE_SHORTCUTS, findAppletShortcutIndex, readShortcut } from '../shortcuts/consoleShortcuts.ts';
+import { StatusBar } from '../statusBar/StatusBar.tsx';
+import { CONSOLE_USER } from '../user/userProfile.ts';
+import type { UserProfile } from '../user/userProfile.ts';
+import { GameRow } from './games/GameRow.tsx';
+import { createHomeFocus, focusHomeItem, isHomeItemFocused, moveHomeFocus, readFocusedIndex } from './homeFocus.ts';
+import type { HomeFocus, HomeRow, HomeRowSizes } from './homeFocus.ts';
+import { ShortcutRow } from './shortcuts/ShortcutRow.tsx';
+import { UserRow } from './users/UserRow.tsx';
+import './homeMenu.css';
+
+type HomeMenuProps = {
+  readonly entrance: HomeEntrance;
+  readonly suspendedGameId: GameId | null;
+  readonly settings: ConsoleSettings;
+  readonly hasUnreadNews: boolean;
+  readonly onStartGame: (gameId: GameId) => void;
+  readonly onContinueGame: () => void;
+  readonly onOpenApplet: (applet: AppletId) => void;
+  readonly onSleep: () => void;
+};
+
+type ContinueTrigger = 'gameTile' | 'homeButton';
+
+type HomeExit =
+  | { readonly kind: 'startingGame'; readonly gameId: GameId }
+  | { readonly kind: 'continuingGame'; readonly trigger: ContinueTrigger }
+  | { readonly kind: 'openingApplet'; readonly applet: AppletId }
+  | { readonly kind: 'sleeping' };
+
+type CurtainExit = Exclude<HomeExit, { readonly kind: 'continuingGame' }>;
+
+type HomeCurtainProps = {
+  readonly exit: CurtainExit;
+  readonly onFinished: () => void;
+};
+
+const HOME_USERS: readonly UserProfile[] = [CONSOLE_USER];
+
+const LEAVE_TO_GAME_ANIMATION = 'leave-home-to-game';
+
+const CURTAIN_ANIMATIONS: Readonly<Record<CurtainExit['kind'], string>> = {
+  startingGame: 'fade-in',
+  sleeping: 'fade-in',
+  openingApplet: 'run-timeline',
+};
+
+const ROW_SIZES: HomeRowSizes = {
+  users: HOME_USERS.length,
+  games: GAME_LIBRARY.length,
+  shortcuts: CONSOLE_SHORTCUTS.length,
+};
+
+export function HomeMenu({
+  entrance,
+  suspendedGameId,
+  settings,
+  hasUnreadNews,
+  onStartGame,
+  onContinueGame,
+  onOpenApplet,
+  onSleep,
+}: HomeMenuProps) {
+  const [focus, setFocus] = useState(function focusWhereHomeWasEntered() {
+    return createEntranceFocus(entrance, suspendedGameId);
+  });
+  const [exit, setExit] = useState<HomeExit | null>(null);
+  const isLeaving = exit !== null;
+  const isGameFocused = focus.row === 'games';
+
+  useConsoleButtons('screen', pressHomeMenuButton);
+
+  function pressHomeMenuButton(button: ConsoleButton) {
+    if (isLeaving) {
+      return;
+    }
+
+    if (isDirectionButton(button)) {
+      setFocus(moveHomeFocus(focus, button, ROW_SIZES));
+      return;
+    }
+
+    switch (button) {
+      case 'a':
+        activateFocusedItem();
+        return;
+      case 'home':
+        returnToSuspendedGame();
+        return;
+      case 'plus':
+      case 'minus':
+      case 'x':
+      case 'b':
+      case 'y':
+      case 'capture':
+        return;
+    }
+  }
+
+  function touchItem(row: HomeRow, index: number) {
+    if (isLeaving) {
+      return;
+    }
+
+    if (isHomeItemFocused(focus, row, index)) {
+      activateFocusedItem();
+      return;
+    }
+
+    setFocus(focusHomeItem(focus, row, index));
+  }
+
+  function touchUser(index: number) {
+    touchItem('users', index);
+  }
+
+  function touchGame(index: number) {
+    touchItem('games', index);
+  }
+
+  function touchShortcut(index: number) {
+    touchItem('shortcuts', index);
+  }
+
+  function activateFocusedItem() {
+    switch (focus.row) {
+      case 'users':
+        return;
+      case 'games':
+        startFocusedGame();
+        return;
+      case 'shortcuts':
+        activateShortcut(readFocusedIndex(focus));
+        return;
+    }
+  }
+
+  function startFocusedGame() {
+    const game = readFocusedGame();
+
+    if (game.id === suspendedGameId) {
+      setExit({ kind: 'continuingGame', trigger: 'gameTile' });
+      return;
+    }
+
+    setExit({ kind: 'startingGame', gameId: game.id });
+  }
+
+  function returnToSuspendedGame() {
+    if (suspendedGameId !== null) {
+      setExit({ kind: 'continuingGame', trigger: 'homeButton' });
+    }
+  }
+
+  function activateShortcut(shortcutIndex: number) {
+    const { target } = readShortcut(shortcutIndex);
+
+    if (target.kind === 'sleep') {
+      setExit({ kind: 'sleeping' });
+      return;
+    }
+
+    setExit({ kind: 'openingApplet', applet: target.applet });
+  }
+
+  function readFocusedGame(): Game {
+    return readGame(focus.indexByRow.games);
+  }
+
+  function isFocusedGameSuspended(): boolean {
+    return readFocusedGame().id === suspendedGameId;
+  }
+
+  function finishLeaving() {
+    if (exit === null) {
+      throw new Error('HOME 메뉴를 떠나는 중이 아닌데 전환 효과가 끝났습니다.');
+    }
+
+    switch (exit.kind) {
+      case 'startingGame':
+        onStartGame(exit.gameId);
+        return;
+      case 'continuingGame':
+        onContinueGame();
+        return;
+      case 'openingApplet':
+        onOpenApplet(exit.applet);
+        return;
+      case 'sleeping':
+        onSleep();
+        return;
+    }
+  }
+
+  function finishMenuAnimation(event: AnimationEvent<HTMLDivElement>) {
+    const hasLeftToGame = event.target === event.currentTarget && event.animationName === LEAVE_TO_GAME_ANIMATION;
+
+    if (hasLeftToGame) {
+      finishLeaving();
+    }
+  }
+
+  function createFooterHints(): readonly ButtonHint[] {
+    if (!isGameFocused) {
+      return [{ buttons: ['a'], label: 'OK', onPress: activateFocusedItem }];
+    }
+
+    if (isFocusedGameSuspended()) {
+      return [{ buttons: ['a'], label: 'Continue', onPress: activateFocusedItem }];
+    }
+
+    return [{ buttons: ['a'], label: 'Start', onPress: activateFocusedItem }];
+  }
+
+  return (
+    <div className="home-menu console-layer" data-entrance={entrance.kind} data-exit={exit === null ? 'none' : exit.kind} onAnimationEnd={finishMenuAnimation}>
+      <div className="home-menu-screen" inert={isLeaving}>
+        <div className="home-menu-content">
+          <UserRow
+            users={HOME_USERS}
+            focusedIndex={readRowFocus(focus, 'users')}
+            pressedIndex={readPressedIndex(focus, exit, 'users')}
+            onTouchUser={touchUser}
+          />
+          <StatusBar settings={settings} />
+          <GameRow
+            games={GAME_LIBRARY}
+            focusedIndex={readRowFocus(focus, 'games')}
+            pressedIndex={readPressedIndex(focus, exit, 'games')}
+            launchingIndex={readLaunchingIndex(focus, exit)}
+            suspendedGameId={suspendedGameId}
+            onTouchGame={touchGame}
+          />
+          <ShortcutRow
+            shortcuts={CONSOLE_SHORTCUTS}
+            focusedIndex={readRowFocus(focus, 'shortcuts')}
+            pressedIndex={readPressedIndex(focus, exit, 'shortcuts')}
+            hasUnreadNews={hasUnreadNews}
+            onTouchShortcut={touchShortcut}
+          />
+        </div>
+        <ScreenFooter hints={createFooterHints()} layout="fullScreen" />
+      </div>
+      {exit !== null && exit.kind !== 'continuingGame' && <HomeCurtain exit={exit} onFinished={finishLeaving} />}
+    </div>
+  );
+}
+
+function HomeCurtain({ exit, onFinished }: HomeCurtainProps) {
+  function finishCurtain(event: AnimationEvent<HTMLSpanElement>) {
+    const hasFinished = event.target === event.currentTarget && event.animationName === CURTAIN_ANIMATIONS[exit.kind];
+
+    if (hasFinished) {
+      onFinished();
+    }
+  }
+
+  return <span className="home-menu-curtain" data-exit={exit.kind} onAnimationEnd={finishCurtain} />;
+}
+
+function createEntranceFocus(entrance: HomeEntrance, suspendedGameId: GameId | null): HomeFocus {
+  switch (entrance.kind) {
+    case 'fromApplet':
+      return createHomeFocus('shortcuts', findAppletShortcutIndex(entrance.applet));
+    case 'fromGame':
+      return createHomeFocus('games', readSuspendedGameIndex(suspendedGameId));
+    case 'fromUnlock':
+      return createHomeFocus('games', 0);
+  }
+}
+
+function readSuspendedGameIndex(suspendedGameId: GameId | null): number {
+  if (suspendedGameId === null) {
+    throw new Error('게임에서 HOME으로 왔는데 일시 정지된 게임이 없습니다.');
+  }
+
+  return findGameIndex(suspendedGameId);
+}
+
+function readRowFocus(focus: HomeFocus, row: HomeRow): number | null {
+  return focus.row === row ? readFocusedIndex(focus) : null;
+}
+
+function readPressedIndex(focus: HomeFocus, exit: HomeExit | null, row: HomeRow): number | null {
+  const showsPressedItem = exit !== null && wasItemActivated(exit);
+
+  return showsPressedItem ? readRowFocus(focus, row) : null;
+}
+
+function wasItemActivated(exit: HomeExit): boolean {
+  return exit.kind !== 'continuingGame' || exit.trigger === 'gameTile';
+}
+
+function readLaunchingIndex(focus: HomeFocus, exit: HomeExit | null): number | null {
+  const isStartingGame = exit !== null && exit.kind === 'startingGame';
+
+  return isStartingGame ? readRowFocus(focus, 'games') : null;
+}
