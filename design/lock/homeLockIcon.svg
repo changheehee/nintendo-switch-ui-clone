@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="168" viewBox="0 0 168 168">
+  <defs>
+    <mask id="door">
+      <rect width="168" height="168" fill="#ffffff"/>
+      <rect x="71" y="80" width="28" height="22" fill="#000000"/>
+    </mask>
+  </defs>
+  <circle cx="84" cy="84" r="80.5" fill="none" stroke="#ffffff" stroke-width="7"/>
+  <g mask="url(#door)">
+    <path d="M84.5 39 L128.5 78 H117 V120 H53 V78 H40.5 Z" fill="#ffffff" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+</svg>
