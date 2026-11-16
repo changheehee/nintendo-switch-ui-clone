@@ -1,0 +1,36 @@
+.theme-swatch {
+    inline-size: calc(96 * var(--screen-pixel));
+    block-size: calc(58 * var(--screen-pixel));
+    border: calc(2 * var(--screen-pixel)) solid;
+}
+
+.theme-swatch[data-theme-swatch='basicWhite'] {
+    border-color: var(--color-swatch-white-border);
+    background-color: #f7f7f7;
+}
+
+.theme-swatch[data-theme-swatch='basicBlack'] {
+    border-color: var(--color-swatch-black-border);
+    background-color: #000000;
+}
+
+.theme-check {
+    position: relative;
+    inline-size: calc(40 * var(--screen-pixel));
+    block-size: calc(40 * var(--screen-pixel));
+    margin-inline-start: auto;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+}
+
+.theme-check::after {
+    position: absolute;
+    inset-inline-start: calc(11 * var(--screen-pixel));
+    inset-block-start: calc(9 * var(--screen-pixel));
+    inline-size: calc(19 * var(--screen-pixel));
+    block-size: calc(11 * var(--screen-pixel));
+    border-inline-start: calc(3 * var(--screen-pixel)) solid var(--color-background);
+    border-block-end: calc(3 * var(--screen-pixel)) solid var(--color-background);
+    rotate: -45deg;
+    content: '';
+}

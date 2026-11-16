@@ -1,0 +1,25 @@
+.connecting-spinner {
+    position: absolute;
+    inset-inline-start: calc(615 * var(--screen-pixel));
+    inset-block-start: calc(254 * var(--screen-pixel));
+    inline-size: calc(50 * var(--screen-pixel));
+    block-size: calc(50 * var(--screen-pixel));
+    border: calc(5 * var(--screen-pixel)) solid var(--color-separator);
+    border-block-start-color: var(--color-highlight-text);
+    border-radius: 50%;
+    animation: spin-connecting-spinner 750ms linear 2;
+}
+
+@keyframes spin-connecting-spinner {
+    to {
+        rotate: 1turn;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes spin-connecting-spinner {
+        to {
+            opacity: 0.4;
+        }
+    }
+}
