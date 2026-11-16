@@ -1,0 +1,4 @@
+.lock-screen {
+    background-color: var(--color-background);
+    animation: fade-in 60ms linear both;
+}

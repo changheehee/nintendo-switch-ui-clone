@@ -1,0 +1,34 @@
+.boot-screen {
+    --black-before-maker: 500ms;
+    --maker-hold: 1500ms;
+    --black-between-logos: 1600ms;
+    --console-hold: 2700ms;
+    --console-fade: 70ms;
+    --black-after-logos: 1000ms;
+    --console-appears-at: calc(var(--black-before-maker) + var(--maker-hold) + var(--black-between-logos));
+
+    background-color: #000000;
+    animation: run-timeline calc(var(--console-appears-at) + var(--console-hold) + var(--console-fade) + var(--black-after-logos)) linear both;
+}
+
+.boot-screen-maker {
+    position: absolute;
+    inset-inline-start: calc(480 * var(--screen-pixel));
+    inset-block-start: calc(318 * var(--screen-pixel));
+    inline-size: calc(320 * var(--screen-pixel));
+    block-size: calc(84 * var(--screen-pixel));
+    visibility: hidden;
+    animation: show-while-running var(--maker-hold) linear var(--black-before-maker);
+}
+
+.boot-screen-console {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: calc(76 * var(--screen-pixel));
+    visibility: hidden;
+    animation:
+        show-while-running calc(var(--console-hold) + var(--console-fade)) linear var(--console-appears-at),
+        fade-out var(--console-fade) linear calc(var(--console-appears-at) + var(--console-hold)) forwards;
+}

@@ -1,0 +1,64 @@
+.shortcut-row {
+    --shortcut-row-left: 327;
+    --shortcut-row-top: 503;
+    --shortcut-size: 86;
+    --shortcut-gap: 22;
+
+    position: absolute;
+    inset-inline-start: calc(var(--shortcut-row-left) * var(--screen-pixel));
+    inset-block-start: calc(var(--shortcut-row-top) * var(--screen-pixel));
+    display: flex;
+    gap: calc(var(--shortcut-gap) * var(--screen-pixel));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.shortcut-row-slot {
+    position: relative;
+    inline-size: calc(var(--shortcut-size) * var(--screen-pixel));
+    block-size: calc(var(--shortcut-size) * var(--screen-pixel));
+}
+
+.shortcut-icon {
+    display: grid;
+    place-items: center;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-item);
+}
+
+.shortcut-icon[data-pressed='true'] {
+    animation: press-item 180ms ease-out both;
+}
+
+.shortcut-icon-glyph {
+    inline-size: calc(52 * var(--screen-pixel));
+    block-size: calc(52 * var(--screen-pixel));
+}
+
+.shortcut-row-notification {
+    position: absolute;
+    inset-inline-start: calc(77 * var(--screen-pixel));
+    inset-block-start: calc(1 * var(--screen-pixel));
+    inline-size: calc(8 * var(--screen-pixel));
+    block-size: calc(8 * var(--screen-pixel));
+    border-radius: 50%;
+    background-color: var(--color-notification);
+}
+
+.shortcut-row-label {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: calc(105 * var(--screen-pixel));
+    margin: 0;
+    color: var(--color-highlight-text);
+    font-size: calc(27.5 * var(--screen-pixel));
+    line-height: 1;
+    white-space: nowrap;
+    translate: -50% 0;
+    text-box: trim-both cap alphabetic;
+    animation: fade-in 80ms linear both;
+}

@@ -1,0 +1,114 @@
+.system-dialog-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: var(--layer-dialog);
+    display: grid;
+    place-items: center;
+    background-color: var(--color-dialog-dim);
+    animation: fade-in 130ms ease-out both;
+}
+
+.system-dialog-backdrop[data-closing='true'] {
+    animation: close-dialog 180ms linear forwards;
+}
+
+.system-dialog-backdrop[data-closing='true'] .system-dialog {
+    animation: grow-closing-dialog 180ms linear forwards;
+}
+
+.system-dialog {
+    display: grid;
+    grid-template-rows: auto calc(72 * var(--screen-pixel));
+    inline-size: calc(780 * var(--screen-pixel));
+    border-radius: calc(4 * var(--screen-pixel));
+    overflow: hidden;
+    background-color: var(--color-dialog);
+    animation: open-dialog 100ms ease-out 40ms both;
+}
+
+.system-dialog-message {
+    min-block-size: calc(271 * var(--screen-pixel));
+    font-size: calc(29 * var(--screen-pixel));
+    line-height: 1.45;
+}
+
+.system-dialog-choices {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    border-block-start: calc(1 * var(--screen-pixel)) solid var(--color-dialog-line);
+}
+
+.system-dialog-choice {
+    position: relative;
+    color: var(--color-dialog-choice);
+    font-size: calc(28 * var(--screen-pixel));
+}
+
+.system-dialog-choice + .system-dialog-choice {
+    border-inline-start: calc(1 * var(--screen-pixel)) solid var(--color-dialog-line);
+}
+
+.system-dialog-choice[data-focused='true'] {
+    background-color: var(--color-dialog-focus);
+}
+
+.system-dialog-choice[data-pressed='true'] {
+    animation: flash-pressed-choice 180ms linear both;
+}
+
+.system-dialog-notice {
+    display: grid;
+    place-content: center;
+    min-block-size: calc(271 * var(--screen-pixel));
+    margin: 0;
+    padding-inline: calc(60 * var(--screen-pixel));
+    text-align: center;
+}
+
+@keyframes open-dialog {
+    from {
+        opacity: 0;
+        scale: 0.985;
+    }
+}
+
+@keyframes close-dialog {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes grow-closing-dialog {
+    to {
+        scale: 1.014;
+    }
+}
+
+@keyframes flash-pressed-choice {
+    from {
+        background-color: var(--color-dialog-focus);
+    }
+
+    33% {
+        background-color: var(--color-dialog-press-flash);
+    }
+
+    to {
+        background-color: var(--color-dialog);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes open-dialog {
+        from {
+            opacity: 0;
+        }
+    }
+
+    @keyframes grow-closing-dialog {
+        to {
+            scale: 1;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+.button-hints {
+    display: flex;
+    align-items: center;
+    gap: calc(42 * var(--screen-pixel));
+}
+
+.button-hint {
+    display: flex;
+    align-items: center;
+    font-size: calc(26.5 * var(--screen-pixel));
+    line-height: 1;
+}
+
+.button-hint-separator {
+    margin-inline: calc(6 * var(--screen-pixel));
+    text-box: trim-both cap alphabetic;
+}
+
+.button-hint-label {
+    margin-inline-start: calc(13 * var(--screen-pixel));
+    white-space: nowrap;
+    text-box: trim-both cap alphabetic;
+}

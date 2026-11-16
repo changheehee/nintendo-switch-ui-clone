@@ -1,0 +1,33 @@
+.home-menu-mark {
+    position: absolute;
+    inset-block-start: calc(258.5 * var(--screen-pixel));
+    display: grid;
+    justify-items: center;
+    gap: calc(18.5 * var(--screen-pixel));
+    color: var(--color-text);
+    translate: -50% 0;
+    pointer-events: none;
+}
+
+.home-menu-mark[data-placement='entrance'] {
+    inset-inline-start: calc(830.5 * var(--screen-pixel));
+}
+
+.home-menu-mark[data-placement='prompt'] {
+    inset-inline-start: calc(640 * var(--screen-pixel));
+}
+
+.home-menu-mark-icon {
+    inline-size: calc(151 * var(--screen-pixel));
+    block-size: calc(151 * var(--screen-pixel));
+    background-color: currentcolor;
+    mask-image: url('./assets/homeLockIcon@2x.png');
+    mask-size: 100% 100%;
+}
+
+.home-menu-mark-label {
+    font-size: calc(23.5 * var(--screen-pixel));
+    line-height: 1;
+    white-space: nowrap;
+    text-box: trim-both cap alphabetic;
+}

@@ -1,0 +1,53 @@
+.album-empty {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    color: var(--color-muted-text);
+    font-size: calc(26.5 * var(--screen-pixel));
+}
+
+.album-grid {
+    --album-thumbnail-width: 256;
+    --album-thumbnail-height: 144;
+    --album-row-gap: 28;
+    --album-column-gap: 14;
+
+    position: absolute;
+    inset-inline-start: calc(107 * var(--screen-pixel));
+    inset-block-start: calc(40 * var(--screen-pixel));
+    display: grid;
+    grid-template-columns: repeat(var(--album-columns), calc(var(--album-thumbnail-width) * var(--screen-pixel)));
+    gap: calc(var(--album-row-gap) * var(--screen-pixel)) calc(var(--album-column-gap) * var(--screen-pixel));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    translate: 0 calc(-1 * var(--album-scrolled-rows) * (var(--album-thumbnail-height) + var(--album-row-gap)) * var(--screen-pixel));
+    transition: translate 133ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.album-slot {
+    position: relative;
+    block-size: calc(var(--album-thumbnail-height) * var(--screen-pixel));
+}
+
+.album-thumbnail {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    box-shadow: var(--shadow-item);
+}
+
+.album-thumbnail-image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .album-grid {
+        transition: none;
+    }
+}

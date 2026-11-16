@@ -1,0 +1,41 @@
+.button-guide {
+    position: absolute;
+    inset-inline: calc(250 * var(--screen-pixel));
+    inset-block-start: calc(34 * var(--screen-pixel));
+}
+
+.button-guide-intro {
+    margin: 0 0 calc(22 * var(--screen-pixel));
+    color: var(--color-muted-text);
+    font-size: calc(21 * var(--screen-pixel));
+    line-height: 1.4;
+}
+
+.button-guide-list {
+    margin: 0;
+    padding: 0;
+    border-block-start: calc(1 * var(--screen-pixel)) solid var(--color-separator);
+    list-style: none;
+}
+
+.button-guide-row {
+    display: flex;
+    align-items: center;
+    gap: calc(14 * var(--screen-pixel));
+    block-size: calc(54 * var(--screen-pixel));
+    padding-inline: calc(15 * var(--screen-pixel));
+    border-block-end: calc(1 * var(--screen-pixel)) solid var(--color-separator);
+    font-size: calc(24 * var(--screen-pixel));
+}
+
+.button-guide-glyphs {
+    display: flex;
+    gap: calc(6 * var(--screen-pixel));
+    inline-size: calc(56 * var(--screen-pixel));
+}
+
+.button-guide-keys {
+    margin-inline-start: auto;
+    color: var(--color-accent);
+    font-size: calc(22 * var(--screen-pixel));
+}

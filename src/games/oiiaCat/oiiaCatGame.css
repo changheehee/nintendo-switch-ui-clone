@@ -1,0 +1,43 @@
+.oiia-game {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-color: #cfe6f5;
+    animation: fade-in 400ms ease-out both;
+}
+
+.oiia-game-backdrop,
+.oiia-game-stage {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+}
+
+.oiia-game-stage > canvas {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+}
+
+.oiia-game-hints {
+    position: absolute;
+    inset-inline-end: calc(30 * var(--screen-pixel));
+    inset-block-end: calc(24 * var(--screen-pixel));
+    display: flex;
+    gap: calc(26 * var(--screen-pixel));
+    margin: 0;
+    padding-block: calc(10 * var(--screen-pixel));
+    padding-inline: calc(18 * var(--screen-pixel));
+    border-radius: calc(26 * var(--screen-pixel));
+    background-color: rgb(20 40 60 / 0.55);
+    color: #ffffff;
+    font-size: calc(21 * var(--screen-pixel));
+    list-style: none;
+}
+
+.oiia-game-hint {
+    display: flex;
+    align-items: center;
+    gap: calc(9 * var(--screen-pixel));
+}

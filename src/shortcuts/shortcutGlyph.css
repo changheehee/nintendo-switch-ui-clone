@@ -1,0 +1,22 @@
+.shortcut-glyph {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    mask-size: 100% 100%;
+}
+
+.shortcut-glyph[data-glyph-tone='news'] {
+    background-color: var(--color-glyph-news);
+}
+
+.shortcut-glyph[data-glyph-tone='eshop'] {
+    background-color: var(--color-glyph-eshop);
+}
+
+.shortcut-glyph[data-glyph-tone='album'] {
+    background-color: var(--color-glyph-album);
+}
+
+.shortcut-glyph[data-glyph-tone='system'] {
+    background-color: var(--color-glyph-system);
+}

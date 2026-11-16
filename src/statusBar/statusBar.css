@@ -1,0 +1,87 @@
+.status-bar {
+    position: absolute;
+    inset-inline-end: calc(63 * var(--screen-pixel));
+    inset-block-start: calc(55 * var(--screen-pixel));
+    display: flex;
+    align-items: center;
+    gap: calc(25 * var(--screen-pixel));
+    block-size: calc(20 * var(--screen-pixel));
+    color: var(--color-text);
+    font-family: var(--font-clock);
+    font-size: calc(28.5 * var(--screen-pixel));
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.status-bar-clock,
+.battery-gauge-percentage {
+    white-space: nowrap;
+    text-box: trim-both cap alphabetic;
+}
+
+.status-bar-small-text {
+    font-size: calc(18.5 * var(--screen-pixel));
+}
+
+.status-bar-meridiem {
+    margin-inline-start: calc(3 * var(--screen-pixel));
+}
+
+.status-bar-wifi {
+    inline-size: calc(28 * var(--screen-pixel));
+    block-size: calc(20 * var(--screen-pixel));
+    background-color: currentcolor;
+    mask-image: url('./assets/wifi@2x.png');
+    mask-size: 100% 100%;
+}
+
+.status-bar-wifi[data-online='false'] {
+    color: var(--color-wifi-unlit);
+}
+
+.battery-gauge {
+    display: flex;
+    align-items: center;
+    gap: calc(7 * var(--screen-pixel));
+}
+
+.battery-gauge-body {
+    position: relative;
+    inline-size: calc(36 * var(--screen-pixel));
+    block-size: calc(20 * var(--screen-pixel));
+}
+
+.battery-gauge-frame {
+    position: absolute;
+    inset: 0;
+    background-color: currentcolor;
+    mask-image: url('./assets/batteryFrame@2x.png');
+    mask-size: 100% 100%;
+}
+
+.battery-gauge-level {
+    position: absolute;
+    inset-inline-start: calc(5 * var(--screen-pixel));
+    inset-block-start: calc(5 * var(--screen-pixel));
+    inline-size: calc(23 * var(--screen-pixel));
+    block-size: calc(10 * var(--screen-pixel));
+    background-color: currentcolor;
+    scale: var(--battery-level-ratio) 1;
+    transform-origin: left center;
+}
+
+.battery-gauge[data-charging='true'] .battery-gauge-level {
+    background-color: var(--color-battery-charging);
+}
+
+.battery-gauge-bolt {
+    position: absolute;
+    inset-inline-start: calc(41 * var(--screen-pixel));
+    inset-block-start: calc(0.5 * var(--screen-pixel));
+    inline-size: calc(9 * var(--screen-pixel));
+    block-size: calc(19 * var(--screen-pixel));
+    background-color: currentcolor;
+    mask-image: url('./assets/batteryBolt@2x.png');
+    mask-size: 100% 100%;
+}

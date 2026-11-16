@@ -1,0 +1,40 @@
+.button-glyph {
+    display: inline-block;
+    flex: none;
+    inline-size: calc(25 * var(--screen-pixel));
+    block-size: calc(25 * var(--screen-pixel));
+    background-color: currentcolor;
+    mask-size: 100% 100%;
+}
+
+.button-glyph[data-button='a'] {
+    mask-image: url('./assets/button-a@2x.png');
+}
+
+.button-glyph[data-button='b'] {
+    mask-image: url('./assets/button-b@2x.png');
+}
+
+.button-glyph[data-button='x'] {
+    mask-image: url('./assets/button-x@2x.png');
+}
+
+.button-glyph[data-button='y'] {
+    mask-image: url('./assets/button-y@2x.png');
+}
+
+.button-glyph[data-button='plus'] {
+    mask-image: url('./assets/button-plus@2x.png');
+}
+
+.button-glyph[data-button='minus'] {
+    mask-image: url('./assets/button-minus@2x.png');
+}
+
+.button-glyph[data-button='home'] {
+    mask-image: url('./assets/button-home@2x.png');
+}
+
+.button-glyph[data-button='capture'] {
+    mask-image: url('./assets/button-capture@2x.png');
+}

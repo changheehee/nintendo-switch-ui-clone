@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="69" height="30" viewBox="0 0 69 30">
+  <defs>
+    <mask id="cutouts">
+      <rect width="69" height="30" fill="#ffffff"/>
+      <rect x="14" y="4" width="40" height="22" fill="#000000"/>
+      <circle cx="6.5" cy="7.5" r="2.6" fill="#000000"/>
+      <circle cx="6.5" cy="14.5" r="1.4" fill="#000000"/>
+      <circle cx="6.5" cy="20.5" r="1.4" fill="#000000"/>
+      <circle cx="3.6" cy="17.5" r="1.4" fill="#000000"/>
+      <circle cx="9.4" cy="17.5" r="1.4" fill="#000000"/>
+      <circle cx="62.5" cy="5.5" r="1.4" fill="#000000"/>
+      <circle cx="62.5" cy="11.5" r="1.4" fill="#000000"/>
+      <circle cx="59.6" cy="8.5" r="1.4" fill="#000000"/>
+      <circle cx="65.4" cy="8.5" r="1.4" fill="#000000"/>
+      <circle cx="62.5" cy="19" r="2.4" fill="#000000"/>
+    </mask>
+  </defs>
+  <rect width="69" height="30" rx="4" fill="#ffffff" mask="url(#cutouts)"/>
+</svg>

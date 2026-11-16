@@ -1,0 +1,35 @@
+.close-software {
+    display: grid;
+    grid-template-columns: calc(170 * var(--screen-pixel)) 1fr;
+    align-items: center;
+    gap: calc(44 * var(--screen-pixel));
+    padding-block: calc(48 * var(--screen-pixel)) calc(53 * var(--screen-pixel));
+    padding-inline: calc(60 * var(--screen-pixel)) calc(40 * var(--screen-pixel));
+}
+
+.close-software-icon {
+    position: relative;
+    inline-size: calc(170 * var(--screen-pixel));
+    block-size: calc(170 * var(--screen-pixel));
+}
+
+.close-software-cover {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+}
+
+.close-software-user {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-end: calc(-22 * var(--screen-pixel));
+    inline-size: calc(52 * var(--screen-pixel));
+    block-size: calc(52 * var(--screen-pixel));
+    border: calc(3 * var(--screen-pixel)) solid #ffffff;
+    border-radius: 50%;
+    translate: -50% 0;
+}
+
+.close-software-message {
+    margin: 0;
+}
