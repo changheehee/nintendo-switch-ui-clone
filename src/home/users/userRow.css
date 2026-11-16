@@ -1,0 +1,49 @@
+.user-row {
+    position: absolute;
+    inset-inline-start: calc(60 * var(--screen-pixel));
+    inset-block-start: calc(35 * var(--screen-pixel));
+    display: flex;
+    gap: calc(11 * var(--screen-pixel));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.user-row-slot {
+    position: relative;
+    inline-size: calc(60 * var(--screen-pixel));
+    block-size: calc(60 * var(--screen-pixel));
+}
+
+.user-icon {
+    inline-size: 100%;
+    block-size: 100%;
+    border: calc(3 * var(--screen-pixel)) solid var(--color-surface);
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-item);
+}
+
+.user-icon[data-pressed='true'] {
+    animation: press-item 180ms ease-out both;
+}
+
+.user-icon-avatar {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: 50%;
+}
+
+.user-row-label {
+    position: absolute;
+    inset-inline-start: calc(-20 * var(--screen-pixel));
+    inset-block-start: calc(78 * var(--screen-pixel));
+    margin: 0;
+    color: var(--color-highlight-text);
+    font-size: calc(27.5 * var(--screen-pixel));
+    line-height: 1;
+    white-space: nowrap;
+    text-box: trim-both cap alphabetic;
+    animation: fade-in 80ms linear both;
+}

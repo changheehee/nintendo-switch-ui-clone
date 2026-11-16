@@ -4,9 +4,11 @@ import './app.css';
 import { BootScreen } from './boot/BootScreen.tsx';
 import { CaptureToast } from './capture/CaptureToast.tsx';
 import { findRunningGameId, INITIAL_CONSOLE_STATE, updateConsole } from './console/consoleState.ts';
-import type { ConsoleAction, ConsoleState } from './console/consoleState.ts';
+import type { AppletId, ConsoleAction, ConsoleState, HomeEntrance } from './console/consoleState.ts';
 import { GameLaunchScreen } from './games/GameLaunchScreen.tsx';
+import type { GameId } from './games/gameLibrary.ts';
 import { RunningGame } from './games/RunningGame.tsx';
+import { HomeMenu } from './home/HomeMenu.tsx';
 import { ConsoleInputContext, createConsoleInput } from './input/consoleInput.ts';
 import type { ConsoleButton } from './input/consoleButtons.ts';
 import { useKeyboardButtons } from './input/useKeyboardButtons.ts';
@@ -19,6 +21,10 @@ type ConsoleDispatch = ActionDispatch<[action: ConsoleAction]>;
 type ScreenProps = {
   readonly state: ConsoleState;
   readonly dispatch: ConsoleDispatch;
+};
+
+type HomeScreenProps = ScreenProps & {
+  readonly entrance: HomeEntrance;
 };
 
 type ShownCapture = {
@@ -110,7 +116,7 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
         />
       );
     case 'home':
-      return null;
+      return <HomeScreen state={state} entrance={screen.entrance} dispatch={dispatch} />;
     case 'launching':
       return <GameLaunchScreen gameId={screen.gameId} onReady={startPlaying} />;
     case 'playing':
@@ -120,4 +126,40 @@ function CurrentScreen({ state, dispatch }: ScreenProps) {
     case 'asleep':
       return <SleepScreen onWake={wakeUp} />;
   }
+}
+
+function HomeScreen({ state, entrance, dispatch }: HomeScreenProps) {
+  function startGame(gameId: GameId) {
+    dispatch({ type: 'gameStarted', gameId });
+  }
+
+  function continueGame() {
+    dispatch({ type: 'gameContinued' });
+  }
+
+  function closeGame() {
+    dispatch({ type: 'gameClosed' });
+  }
+
+  function openApplet(applet: AppletId) {
+    dispatch({ type: 'appletOpened', applet });
+  }
+
+  function sleep() {
+    dispatch({ type: 'sleepRequested' });
+  }
+
+  return (
+    <HomeMenu
+      entrance={entrance}
+      suspendedGameId={state.suspendedGameId}
+      settings={state.settings}
+      hasUnreadNews={state.hasUnreadNews}
+      onStartGame={startGame}
+      onContinueGame={continueGame}
+      onCloseGame={closeGame}
+      onOpenApplet={openApplet}
+      onSleep={sleep}
+    />
+  );
 }
