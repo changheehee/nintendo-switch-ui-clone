@@ -1,6 +1,7 @@
 # nintendo-switch
 
-Nintendo Switch HOME 메뉴를 React와 TypeScript로 다시 만든 개인 연습 프로젝트입니다. 닌텐도와는 관련이 없습니다.
+Nintendo Switch HOME 메뉴를 React와 TypeScript로 다시 만든 개인 연습 프로젝트입니다. 
+오로지 연습을 위해 만든 프로젝트이기에 닌텐도와 직접적인 관련이 없습니다.
 
 ## 실행
 
